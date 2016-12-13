@@ -1,0 +1,5 @@
+12-08-16:
+  Location of Bug: site->admin->categories
+  Description: After you add a category, if you refresh the page, that category you just added, will get added again,
+                and given the next id available.
+  Thoughts: Is this due to a superglobal variable that needs to be unset/deleted after adding a category?
