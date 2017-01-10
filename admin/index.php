@@ -1,3 +1,9 @@
+<?php if($_GET['pass'] != '1041462') {
+  header("Location: ../index.php");
+}
+
+?>
+
 <?php include "includes/templates/admin_header.php"; ?>
 
 
@@ -18,10 +24,6 @@
                         <h1 class="page-header">
                             Welcome to Admin
                             <small>Author</small>
-
-                            <?php
-                            echo "Hello, World!";
-                            ?>
                         </h1>
 
 

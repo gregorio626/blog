@@ -2,8 +2,6 @@
     <div id="wrapper">
       <!--Navigation -->
 <?php include "includes/templates/admin_navigation.php"; ?>
-
-
         <div id="page-wrapper">
             <div class="container-fluid">
                 <!-- Page Heading -->
@@ -20,16 +18,16 @@ if(isset($_GET['source'])) {
 } else {$source = '';}
 
 switch($source) {
-  /* /admin/posts.php?source=add_post */
+
   case 'add_post';
     include "includes/add_post.php";
     break;
   case 'edit_post';
     include "includes/edit_post.php";
     break;
-  /* /admin/posts.php */
+  /* /admin/comments.php */
   default;
-    include "includes/view_all_posts.php";
+    include "includes/view_all_comments.php";
     break;
 }
 ?>

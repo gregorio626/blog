@@ -1,0 +1,4 @@
+----When adding or editing a post, the name of the image gets stored, but the actual image does not get moved into the
+    folder where all of the images are stored.
+!---FIX: There are no permissions for the file to be moved to the images folder. so try running this command as root:
+        sudo chown -R www-data:www-data /var/www/blog/

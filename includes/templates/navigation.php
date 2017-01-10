@@ -20,21 +20,22 @@
 
               <?php
 
-                $query = "SELECT category_title FROM categories";
+                $query = "SELECT category_id, category_title FROM categories";
                 $select_all_categories_query = mysqli_query($connection, $query);
 
                 while($row = mysqli_fetch_assoc($select_all_categories_query)) {
+                  $category_id = $row['category_id'];
                   $category_title = $row['category_title'];
 
-                  echo "<li><a href='#'>{$category_title}</a></li>";
+                  echo "<li><a href='category.php?category=$category_id'>{$category_title}</a></li>";
                 }
               ?>
 
-
+<!--
                 <li>
                     <a href="admin">Admin</a>
                 </li>
-
+-->
 <!--
                 <li>
                     <a href="#">Services</a>

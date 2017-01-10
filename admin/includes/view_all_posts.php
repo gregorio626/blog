@@ -5,9 +5,12 @@ if(isset($_GET['delete'])) {
 
   $query = "DELETE FROM posts WHERE post_id = {$post_id_to_delete}";
   $delete_post_query = mysqli_query($connection, $query);
+  header("Location: posts.php");
 }
 
 ?>
+
+
 
 <table class="table table-bordered table-hover">
   <thead>
@@ -21,6 +24,8 @@ if(isset($_GET['delete'])) {
       <th>Tags</th>
       <th>Comments</th>
       <th>Date</th>
+      <th>Edit</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -44,9 +49,20 @@ echo "<tr>";
 echo "<td>$post_id</td>";
 echo "<td>$post_author</td>";
 echo "<td>$post_title</td>";
-echo "<td>$post_category_id</td>";
+
+/*Get the row(The category that we want to edit) */
+$query = "SELECT category_title FROM categories WHERE category_id = {$post_category_id}";
+$select_categories_by_id_query = mysqli_query($connection, $query);
+
+/*For each result(Should only ever be one row fetched anyways) */;
+while($row = mysqli_fetch_assoc($select_categories_by_id_query)) {
+  $category_title = $row['category_title'];
+  echo "<td>{$category_title}</td>";
+}
+
+
 echo "<td>$post_status</td>";
-echo "<td><img style='width: 100px;' src='../images/$post_image' alt='image'></td>";
+echo "<td><img style='width: 100px;' src='../images/" . $post_image . "' alt='image'></td>";
 echo "<td>$post_tags</td>";
 echo "<td>$post_comment_count</td>";
 echo "<td>$post_date</td>";
@@ -56,6 +72,5 @@ echo "</tr>";
 }
 
 ?>
-
   </tbody>
 </table>

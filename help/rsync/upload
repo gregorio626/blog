@@ -1,0 +1,3 @@
+Upload from local to remote:
+
+rsync -avh --no-o /home/path/to/blog/folder root@138.68.6.98:/var/www/

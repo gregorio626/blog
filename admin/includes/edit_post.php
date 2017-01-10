@@ -38,6 +38,11 @@ if(isset($_POST['update_post_submit'])) {
   //If we are not changing the image, we want to just use the image currently in the row as of before the update
   if(empty($post_image)) {
     $query = "SELECT post_image FROM posts WHERE post_id = $current_post_id";
+    $select_post_image_query = mysqli_query($connection, $query);
+
+    while($row = mysqli_fetch_assoc($select_post_image_query)) {
+      $post_image = $row['post_image'];
+    }
   }
   /*Update post query*/
   $query = "UPDATE posts SET ";
@@ -53,6 +58,7 @@ if(isset($_POST['update_post_submit'])) {
 
   $update_post_query = mysqli_query($connection, $query);
   confirmQuery($update_post_query);
+  header("Location: posts.php");
 }
 
 ?>
@@ -65,7 +71,16 @@ if(isset($_POST['update_post_submit'])) {
   </div>
 
   <div class="form-group">
-    <select name="post_category" id="">
+    <?php
+    $query = "SELECT category_title FROM categories WHERE category_id = '{$old_post_category_id}' LIMIT 1";
+    $get_old_post_category_title_by_id = mysqli_query($connection, $query);
+    $row = mysqli_fetch_assoc($get_old_post_category_title_by_id);
+    $old_post_category_title = $row['category_title'];
+    ?>
+    <p><strong>Current Category: <?php echo $old_post_category_title; ?></strong></p>
+
+    <label for="selectCategory">Post Category</label>
+    <select class="form-control" name="post_category" id="selectCategory">
       <?php
 
       $query = "SELECT category_id, category_title FROM categories";
@@ -75,8 +90,11 @@ if(isset($_POST['update_post_submit'])) {
       while($row = mysqli_fetch_assoc($select_all_categories_query)) {
         $category_id = $row['category_id'];
         $category_title = $row['category_title'];
-
-        echo "<option value='$category_id'>{$category_title}</option>";
+        if($category_id != $old_post_category_id) {
+          echo "<option value='$category_id'>{$category_title}</option>";
+        } else {
+          echo "<option value='$category_id' selected>{$category_title}</option>";
+        }
       }
 
       ?>

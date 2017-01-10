@@ -24,7 +24,7 @@ ini_set('display_errors', 'On');
                 if(isset($_POST['submit'])) {
                   $search = $_POST['search'];
                   //The query used to grab posts with specific tags
-                  $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' ";
+                  $query = "SELECT post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_status='published' AND post_tags LIKE '%$search%' ";
                   //Send query to database
                   $search_query = mysqli_query($connection, $query);
 
@@ -42,7 +42,6 @@ ini_set('display_errors', 'On');
                                       $post_title = $row['post_title'];
                                       $post_author = $row['post_author'];
                                       $post_date = $row['post_date'];
-                                      $post_image = $row['post_image'];
                                       $post_image = $row['post_image'];
                                       $post_content = $row['post_content'];
 
