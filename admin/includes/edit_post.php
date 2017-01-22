@@ -10,28 +10,28 @@ $select_current_post_query = mysqli_query($connection, $query);
 
 /*Loop through each row queried */
 while($row = mysqli_fetch_assoc($select_current_post_query)) {
-  $old_post_title = $row['post_title']; //The title of the post
-  $old_post_category_id = $row['post_category_id'];
-  $old_post_author = $row['post_author']; //The author
-  $old_post_status = $row['post_status']; //Draft, published, pending, removed?
-  $old_post_image = $row['post_image']; //The image name
-  $old_post_content = $row['post_content']; //The actual content that the users read
-  $old_post_tags = $row['post_tags']; //the tags(used for searches)
-  $old_post_date = $row['post_date'];
-  $old_post_comment_count = $row['post_comment_count'];
+  $current_post_title = $row['post_title']; //The title of the post
+  $current_post_category_id = $row['post_category_id'];
+  $current_post_author = $row['post_author']; //The author
+  $current_post_status = $row['post_status']; //Draft, published, pending, removed?
+  $current_post_image = $row['post_image']; //The image name
+  $current_post_content = $row['post_content']; //The actual content that the users read
+  $current_post_tags = $row['post_tags']; //the tags(used for searches)
+  $current_post_date = $row['post_date'];
+  $current_post_comment_count = $row['post_comment_count'];
 }
 
 //if the form is submitted
 if(isset($_POST['update_post_submit'])) {
   /*Grab all of our values from the form */
-  $post_title = $_POST['post_title']; //The title of the post
+  $post_title = mysqli_real_escape_string($connection, $_POST['post_title']); //The title of the post
   $post_category_id = $_POST['post_category']; //The id of the category that our post falls under
-  $post_author = $_POST['post_author']; //The post author
+  $post_author = mysqli_real_escape_string($connection, $_POST['post_author']); //The post author
   $post_status = $_POST['post_status']; //Draft, published, pending, removed?
   $post_image = $_FILES['post_image']['name']; //The image name
   $post_image_tmp = $_FILES['post_image']['tmp_name']; //The temporary location of the image
-  $post_content = $_POST['post_content']; //The actual content that the users read
-  $post_tags = $_POST['post_tags']; //the tags(used for searches)
+  $post_content = mysqli_real_escape_string($connection, $_POST['post_content']); //The actual content that the users read
+  $post_tags = mysqli_real_escape_string($connection, $_POST['post_tags']); //the tags(used for searches)
 
   move_uploaded_file($post_image_tmp, "../images/" . $post_image); //Move the image from temporary folder to our images folder
 
@@ -58,7 +58,7 @@ if(isset($_POST['update_post_submit'])) {
 
   $update_post_query = mysqli_query($connection, $query);
   confirmQuery($update_post_query);
-  header("Location: posts.php");
+  echo "<p class='bg-success'>Post Updated. <a href='../post.php?p_id={$current_post_id}'>View Post</a> or <a href='posts.php'>Edit More Posts</a></p>";
 }
 
 ?>
@@ -67,17 +67,17 @@ if(isset($_POST['update_post_submit'])) {
 
   <div class="form-group">
     <label for="post_title">Post Title</label>
-    <input value="<?php echo $old_post_title; ?>" type="text" class="form-control" name="post_title">
+    <input value="<?php echo $current_post_title; ?>" type="text" class="form-control" name="post_title">
   </div>
 
   <div class="form-group">
     <?php
-    $query = "SELECT category_title FROM categories WHERE category_id = '{$old_post_category_id}' LIMIT 1";
+    $query = "SELECT category_title FROM categories WHERE category_id = '{$current_post_category_id}' LIMIT 1";
     $get_old_post_category_title_by_id = mysqli_query($connection, $query);
     $row = mysqli_fetch_assoc($get_old_post_category_title_by_id);
-    $old_post_category_title = $row['category_title'];
+    $current_post_category_title = $row['category_title'];
     ?>
-    <p><strong>Current Category: <?php echo $old_post_category_title; ?></strong></p>
+    <p><strong>Current Category: <?php echo $current_post_category_title; ?></strong></p>
 
     <label for="selectCategory">Post Category</label>
     <select class="form-control" name="post_category" id="selectCategory">
@@ -90,7 +90,7 @@ if(isset($_POST['update_post_submit'])) {
       while($row = mysqli_fetch_assoc($select_all_categories_query)) {
         $category_id = $row['category_id'];
         $category_title = $row['category_title'];
-        if($category_id != $old_post_category_id) {
+        if($category_id != $current_post_category_id) {
           echo "<option value='$category_id'>{$category_title}</option>";
         } else {
           echo "<option value='$category_id' selected>{$category_title}</option>";
@@ -103,36 +103,49 @@ if(isset($_POST['update_post_submit'])) {
 
   <div class="form-group">
     <label for="post_author">Post Author</label>
-    <input value="<?php echo $old_post_author; ?>" type="text" class="form-control" name="post_author">
+    <input value="<?php echo $current_post_author; ?>" type="text" class="form-control" name="post_author">
   </div>
+<div class="form-group">
+  <label for="post_status">Status</label>
+  <select class="form-control" name="post_status" id="post_status">
+      <option value="<?php echo $current_post_status; ?>" selected><?php echo ucfirst($current_post_status); ?></option>
+      <?php
+        if($current_post_status == 'published') {
+          echo "<option value='draft' >Draft</option>";
+        } else {
+          echo "<option value='published' selected>Published</option>";
+        }
+      ?>
 
-  <div class="form-group">
+  </select>
+</div>
+  <!-- <div class="form-group">
     <label for="post_status">Post Status</label>
-    <input value="<?php echo $old_post_status; ?>" type="text" class="form-control" name="post_status">
-  </div>
+    <input value="<?php //echo $current_post_status; ?>" type="text" class="form-control" name="post_status">
+  </div> -->
 
   <div class="form-group">
-    <img width="100" src="../images/<?php echo $old_post_image; ?>" alt="">
+    <img width="100" src="../images/<?php echo $current_post_image; ?>" alt="">
     <label for="post_image">Post Image</label>
     <input type="file" name="post_image" id="post_image">
   </div>
 
   <div class="form-group">
     <label for="post_tags">Post Tags</label>
-    <input value="<?php echo $old_post_tags; ?>" type="text" class="form-control" name="post_tags">
+    <input value="<?php echo $current_post_tags; ?>" type="text" class="form-control" name="post_tags">
   </div>
 
   <div class="form-group">
     <label for="post_content">Post Content</label>
-    <textarea class="form-control" name="post_content" id="" cols="30" rows="10" ><?php echo $old_post_content; ?></textarea>
+    <textarea class="form-control" name="post_content" id="" cols="30" rows="10" ><?php echo $current_post_content; ?></textarea>
   </div>
 
   <div class="row">
     <div class="col-sm-6">
-      <p><strong>Date Created:</strong> <?php echo $old_post_date; ?></p>
+      <p><strong>Date Created:</strong> <?php echo $current_post_date; ?></p>
     </div>
     <div class="col-sm-6">
-      <p><strong>Number of Comments:</strong> <?php echo $old_post_comment_count; ?> </p>
+      <p><strong>Number of Comments:</strong> <?php echo $current_post_comment_count; ?> </p>
     </div>
   </div>
 

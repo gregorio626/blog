@@ -39,7 +39,13 @@ echo "<td>$username</td>";
 echo "<td>$user_firstname</td>";
 echo "<td>$user_lastname</td>";
 echo "<td>$user_email</td>";
-echo "<td";if($user_role == 'admin') {echo " style='font-weight: bold;'";}echo ">$user_role</td>";
+echo "<td";
+if($user_role == 'admin') {
+  echo " style='font-weight: bold;'";
+}
+echo ">" . ucfirst($user_role) . "</td>";
+
+
 echo "<td><a href='users.php?change_to_admin={$user_id}'>Admin</a></td>";
 echo "<td><a href='users.php?change_to_subscriber={$user_id}'>Subscriber</a></td>";
 echo "<td><a href='users.php?source=edit_user&edit_user={$user_id}'>Edit</a></td>";

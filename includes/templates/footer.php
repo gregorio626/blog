@@ -2,7 +2,7 @@
 <footer>
     <div class="row">
         <div class="col-lg-12">
-            <p>Copyright &copy;2016 Gregaholic <?php ?></p>
+            <p>Copyright &copy; Gregaholic <?php echo date("Y"); ?></p>
         </div>
         <!-- /.col-lg-12 -->
     </div>

@@ -1,16 +1,15 @@
 <?php
   if(isset($_POST['create_post_submit'])) {
 
-    $post_title = $_POST['post_title_input']; //The title of the post
-    $post_author = $_POST['post_author_input']; //The author of the post
-    $post_category = $_POST['post_category_input']; //The id of the post's category
+    //Get the information
+    $post_title = mysqli_real_escape_string($connection, $_POST['post_title_input']); //The title of the post
+    $post_author = mysqli_real_escape_string($connection, $_POST['post_author_input']); //The author of the post
+    $post_category = mysqli_real_escape_string($connection, $_POST['post_category_input']); //The id of the post's category
     $post_status = $_POST['post_status_input']; //draft or published
-
     $post_image = $_FILES['post_image_input']['name']; //The name of the post image's file
     $post_image_tmp = $_FILES['post_image_input']['tmp_name']; //The location within the tmp/ folder, that our post image is located at before it is moved to our images folder
-
-    $post_tags = $_POST['post_tags_input']; //The tags(Used to search for the post)
-    $post_content = $_POST['post_content_input']; //The actual content that the reader reads(The post's article itself)
+    $post_tags = mysqli_real_escape_string($connection, $_POST['post_tags_input']); //The tags(Used to search for the post)
+    $post_content = mysqli_real_escape_string($connection, $_POST['post_content_input']); //The actual content that the reader reads(The post's article itself)
     $post_date = date('d-m-y'); //The Day the post was created
 
     $image_location = "../images/" . $post_image;
@@ -23,7 +22,9 @@
 
     confirmQuery($insert_post_query);
 
-    header("Location: posts.php");
+    $post_id = mysqli_insert_id($connection); //returns the id of the last row created in the database
+    echo "<p class='bg-success'>Post Created. <a href='../post.php?p_id={$post_id}'>View Post</a> or <a href='posts.php'>Edit Post</a></p>";
+
   }
 ?>
 
@@ -60,8 +61,12 @@
   </div>
 
   <div class="form-group">
-    <label for="post_status_input">Post Status</label>
-    <input type="text" class="form-control" name="post_status_input">
+    <select name="post_status_input" id="">
+      <option value="draft">Post Status</option>
+      <option value="published">Publish</option>
+      <option value="draft">Draft</option>
+
+    </select>
   </div>
 
   <div class="form-group">
