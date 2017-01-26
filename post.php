@@ -16,7 +16,10 @@
 
               if(isset($_GET['p_id'])) {
                 $post_id = $_GET['p_id'];
-              }
+
+                $post_view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $post_id";
+                $send_post_view_query = mysqli_query($connection, $post_view_query);
+
 
               $query = "SELECT post_title, post_author, post_date, post_image, post_content FROM posts WHERE post_id = $post_id";
               $select_post_by_id_query = mysqli_query($connection, $query);
@@ -48,7 +51,15 @@
                 <hr>
                 <p><?php  echo $post_content ?></p>
                 <hr>
-<?php  } ?>
+<?php  }
+
+
+} else {
+  header("Location: index.php"); //If the post id GET superglobal is not set
+}
+
+
+?>
 
                 <!-- Blog Comments -->
 

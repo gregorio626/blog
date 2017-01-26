@@ -12,6 +12,8 @@
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
+      <!-- <li><a href="#">Active Users: <?php //echo usersOnline(); ?></a></li> -->
+      <li><a href="#">Users online: <span class="usersonline"></span></a></li>
       <li><a href="https://earl-tech.com">Home</a></li>
 
 <!-- Messages Dropdown -->

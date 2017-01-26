@@ -1,5 +1,5 @@
 <?php include "../includes/database.php" ?>
-<?php include "includes/functions.php" ?>
+<?php include "functions.php" ?>
 <?php ob_start(); ?>
 <?php session_start(); ?>
 <?php
@@ -36,6 +36,9 @@ if(!isset($_SESSION['user_role'])) {
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Custom CSS -->
+    <link href="css/styles.css" rel="stylesheet">
+
     <!-- Google Charts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -44,4 +47,4 @@ if(!isset($_SESSION['user_role'])) {
 
 </head>
 
-<body>
+<body id="body">

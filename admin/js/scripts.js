@@ -10,6 +10,7 @@ tinymce.init({
 
 
  $(document).ready(function(){
+
   $('#selectAllBoxes').click(function(event){
     if(this.checked) {
       $('.checkBoxes').each(function(){
@@ -21,4 +22,20 @@ tinymce.init({
       });
     }
   });
+  //Fake loading screen
+  //  var div_box = "<div id='load-screen'><div id='loading'></div></div>";
+  //  $("body").prepend(div_box);
+  //  $('#load-screen').delay(700).fadeOut(600, function(){
+  //    $(this).remove();
+  //  });
  });
+
+
+ function loadUsersOnline() {
+   $.get("functions.php?onlineusers=result", function(data) {
+     $(".usersonline").text(data);//insert the data into the usersOnline container
+   });
+ }
+setInterval(function() {
+  loadUsersOnline();
+},500);//500 = milliseconds

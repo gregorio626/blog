@@ -1,10 +1,9 @@
 <?php include "includes/templates/admin_header.php"; ?>
-
-
-
-
     <div id="wrapper">
+<?php
 
+
+?>
       <!--Navigation -->
 <?php include "includes/templates/admin_navigation.php"; ?>
 

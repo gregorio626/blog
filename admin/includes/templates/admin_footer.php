@@ -1,6 +1,8 @@
     </div>
     <!-- /#wrapper -->
-
+    <script>
+    
+    </script>
     <!-- jQuery -->
     <script src="js/jquery-3.1.1.min.js"></script>
 

@@ -14,8 +14,7 @@
 
               <?php
 
-              if(isset($_GET['p_id']) && isset($_GET['author'])) {
-                $the_post_id = $_GET['p_id'];
+              if(isset($_GET['author'])) {
                 $the_post_author = $_GET['author'];
               }
 

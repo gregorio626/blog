@@ -27,7 +27,7 @@ if(isset($_POST['update_post_submit'])) {
   $post_title = mysqli_real_escape_string($connection, $_POST['post_title']); //The title of the post
   $post_category_id = $_POST['post_category']; //The id of the category that our post falls under
   $post_author = mysqli_real_escape_string($connection, $_POST['post_author']); //The post author
-  $post_status = $_POST['post_status']; //Draft, published, pending, removed?
+  $post_status = mysqli_real_escape_string($connection, $_POST['post_status']); //Draft, published, pending, removed?
   $post_image = $_FILES['post_image']['name']; //The image name
   $post_image_tmp = $_FILES['post_image']['tmp_name']; //The temporary location of the image
   $post_content = mysqli_real_escape_string($connection, $_POST['post_content']); //The actual content that the users read

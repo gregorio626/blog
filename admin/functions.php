@@ -1,4 +1,40 @@
 <?php
+
+/*returns the number of users that have been active in the last 60 seconds */
+function usersOnline() {
+
+  if(isset($_GET['onlineusers'])) {
+    global $connection;
+
+    if(!$connection) {
+      session_start(); //start the session
+      include("../includes/database.php");
+
+      $session_id = session_id(); //get the id of the current session
+      $time = time(); //the current time
+      $timeout_seconds = 5;//the amount of time until the user is marked as offline
+      $timeout = $time - $timeout_seconds; //the time the user is timed out
+
+      /*See if anyone is online */
+      $query = "SELECT * FROM users_online WHERE session_id = '$session_id'";
+      $send_query = mysqli_query($connection, $query);
+      $count = mysqli_num_rows($send_query);
+
+      if($count == NULL) {
+        $query = "INSERT INTO users_online (session_id, time) VALUES ('$session_id', '$time')";
+        mysqli_query($connection, $query);
+      } else {
+        $query = "UPDATE users_online SET time = '$time' WHERE session_id = '$session_id'";
+        mysqli_query($connection, $query);
+      }
+
+      $query = "SELECT * FROM users_online WHERE time > '$timeout'";
+      $users_online_query = mysqli_query($connection, $query);
+      echo $users_online_count = mysqli_num_rows($users_online_query);
+    } //if(!$connection)
+  } //if(isset($_GET['onlineusers']))
+}
+usersOnline();
 /* Confirms a query was successful; */
 function confirmQuery($result) {
   global $connection;
